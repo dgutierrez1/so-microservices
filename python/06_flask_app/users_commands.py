@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE
 
+
 def get_all_users():
   grep_process = Popen(["grep","/bin/bash","/etc/passwd"], stdout=PIPE, stderr=PIPE)
   user_list = Popen(["awk",'-F',':','{print $1}'], stdin=grep_process.stdout, stdout=PIPE, stderr=PIPE).communicate()[0].split('\n')
@@ -20,9 +21,16 @@ def remove_user(username):
     return False if username in get_all_users() else True
 
 def recently_logged():
-	recently = Popen(["last"],stdout=PIPE, stderr=PIPE)
-	recent_list = recently.split('\n')
-	return recent_list
+	recently = Popen(["last"],stdout=PIPE, stderr=PIPE).communicate()[0].split('\n')
+	return recently
+
+def user_info(user):        
+	user_info = Popen(["id", user ], stdout=PIPE, stderr=PIPE)
+	user_info.wait()
+	result = user_info.communicate()[0].split('\n')
+        return result
+
+
 
 #grep /bin/bash /etc/passwd | awk -F ':' ' {print $1}'
 

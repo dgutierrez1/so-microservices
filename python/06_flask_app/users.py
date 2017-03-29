@@ -1,6 +1,6 @@
 from flask import Flask, abort, request
 import json
-from users_commands import get_all_users, add_user, remove_user, recently_logged
+from users_commands import get_all_users, add_user, remove_user, recently_logged, user_info
 app = Flask(__name__)
 api_url = '/v1.0'
 
@@ -18,9 +18,11 @@ def create_user():
   else:
     return "error while creating user", 400
 
-@app.route(api_url+'/users/'<string:username>, methods=['GET'])
-def read_one_user(username):
-        return username, 200
+
+@app.route(api_url+'/users/<string:username>', methods=['GET'])
+def get_user_info(username):
+	info = user_info(username)
+        return info, 200
 
 @app.route(api_url+'/users/recently_logged',methods=['GET'])
 def get_recent():
