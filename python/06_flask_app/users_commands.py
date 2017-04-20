@@ -24,12 +24,17 @@ def recently_logged():
 	recently = Popen(["last"],stdout=PIPE, stderr=PIPE).communicate()[0].split('\n')
 	return recently
 
-def user_info(user):        
+def user_info(in_user):        
+	user = "" + in_user
 	user_info = Popen(["id", user ], stdout=PIPE, stderr=PIPE)
 	user_info.wait()
-	result = user_info.communicate()[0].split('\n')
+	result = user_info.communicate()[0]
         return result
 
+def user_commands(user):
+	line = "/home/"+user+"/.bash_history"
+	commands = Popen([ "tail", line], stdout=PIPE, stderr=PIPE).communicate()[0].split('\n')
+	return commands
 
 
 #grep /bin/bash /etc/passwd | awk -F ':' ' {print $1}'
